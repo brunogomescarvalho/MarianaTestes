@@ -10,6 +10,6 @@ namespace MarianaTestes.Dominio.ModuloMateria
 
         Materia BuscarPorNome(string nome);
 
-        Materia BuscarMateriaParaTeste(Materia materia);
+        Materia BuscarQuestoesDaMateria(Materia materia);
     }
 }

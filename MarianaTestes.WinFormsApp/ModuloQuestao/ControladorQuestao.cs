@@ -109,7 +109,7 @@ namespace MarianaTestes.WinFormsApp.ModuloQuestao
 
             if (idQuestao == -1) return;
 
-            Questao questao = repositorioQuestao.BuscarPorId(idQuestao);
+            Questao questao = repositorioQuestao.BuscarPorId(idQuestao, true);
 
             TelaDetalhesQuestaoForm telaDetalhes = new TelaDetalhesQuestaoForm(questao)
 

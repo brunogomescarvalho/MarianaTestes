@@ -331,6 +331,9 @@ namespace MarianaTestes.InfraData.SqlServer.ModuloTeste
             ON(M.ID = T.MATERIA_ID)";
         }
 
-
+        public Teste SelecionarPorId(int id, bool incluirQuestoes = false, bool incluirAlternativas = false, bool incluirMateria = false)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

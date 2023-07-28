@@ -88,9 +88,9 @@ namespace MarianaTestes.Dominio.ModuloTeste
             var geradorTeste = new GeradorTesteEmString(this);
 
             if (gabarito == true)
-                return geradorTeste.ObterTesteEmString();
-            else
                 return geradorTeste.ObterGabaritoEmString();
+            else
+                return geradorTeste.ObterTesteEmString();
         }
 
         private string ObterTempoDoTesteString()

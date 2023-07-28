@@ -39,7 +39,7 @@ namespace MarianaTestes.InfraData.SqlServer.ModuloQuestao
         {
             var questoes = base.BuscarTodos();
 
-            if(carregarAlternativas)
+            if (carregarAlternativas)
             {
                 questoes.ForEach(x => x.Alternativas.AddRange(BuscarAlternativas(x.Id)));
             }
@@ -47,14 +47,16 @@ namespace MarianaTestes.InfraData.SqlServer.ModuloQuestao
             return questoes;
         }
 
-        public override Questao BuscarPorId(int id)
+
+
+        public Questao BuscarPorId(int id, bool carregarAlternativas = false)
         {
             Questao questao = base.BuscarPorId(id);
-         
-            questao?.Alternativas.AddRange(BuscarAlternativas(questao.Id));
+
+            if (carregarAlternativas)
+                questao?.Alternativas.AddRange(BuscarAlternativas(questao.Id));
 
             return questao;
-
         }
 
         public override void Editar(Questao questao)
@@ -63,7 +65,7 @@ namespace MarianaTestes.InfraData.SqlServer.ModuloQuestao
 
             ExcluirALternativas(questao.Id);
 
-            questao.Alternativas.ForEach(i => { i.Questao = questao; CadastrarAlternativas(i); }) ;
+            questao.Alternativas.ForEach(i => { i.Questao = questao; CadastrarAlternativas(i); });
         }
 
         public override void Excluir(int id)
@@ -74,18 +76,18 @@ namespace MarianaTestes.InfraData.SqlServer.ModuloQuestao
 
                 base.Excluir(id);
             }
-            else           
+            else
                 throw new Exception();
-            
+
         }
 
         public List<Questao> BuscarQuestoesProvaRecuperacao(int idDisciplina, SerieMateriaEnum serie)
         {
             List<SqlParameter> parameters = new List<SqlParameter>() { new SqlParameter("DISCIPLINA_ID", idDisciplina), new SqlParameter("MATERIA_SERIE", serie) };
-           
+
             return BuscarTodosPorParametros(parameters, ObterQueryBuscarQuestoesTesteRecuperacao());
         }
-       
+
         public List<Questao> BuscarQuestoesNaoUtilizadas()
         {
             return BuscarTodosPorParametros(null!, ObterQueryQuestoesNaoUtilizadas());
@@ -339,6 +341,6 @@ namespace MarianaTestes.InfraData.SqlServer.ModuloQuestao
             WHERE[QUESTAO_ID] = @ID_QUESTAO";
         }
 
-       
+
     }
 }

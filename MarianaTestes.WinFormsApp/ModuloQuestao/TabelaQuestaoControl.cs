@@ -41,8 +41,9 @@ namespace MarianaTestes.WinFormsApp.ModuloQuestao
                     i.Id,
                     i.Pergunta,
                     i.Materia.Nome,
-                    i.Materia.Serie.ToString());
-                   
+                    i.Materia.Serie.ToString(),
+                i.Utilizada ? "Sim" : "Não");
+
             });
         }
 
@@ -66,7 +67,10 @@ namespace MarianaTestes.WinFormsApp.ModuloQuestao
                 {Name = "materia", HeaderText = "Materia"},
 
                 new DataGridViewTextBoxColumn()
-                {Name = "seria", HeaderText = "Série"},
+                {Name = "serie", HeaderText = "Série"},
+
+                 new DataGridViewTextBoxColumn()
+                {Name = "utilizada", HeaderText = "Utilizada"},
 
             };
 

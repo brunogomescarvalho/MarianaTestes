@@ -23,7 +23,7 @@ namespace MarianaTestes.WinFormsApp.ModuloTeste
 
             testes.ForEach(i =>
             {
-                dataGridTeste.Rows.Add(i.Id, i.Titulo, $"{i.DataTeste:d}", i.QtdQuestoes, i.Serie
+                dataGridTeste.Rows.Add(i.Id, i.Titulo, $"{i.DataTeste:d}", i.Questoes.Count, i.Serie
                 , i?.Materia?.Nome, i.Disciplina.Nome, i.Recuperacao?"Sim":"Não", i.TempoDesdeRealizacao);
             });
 

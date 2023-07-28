@@ -6,14 +6,16 @@ using MarianaTestes.Dominio.ModuloDisciplina;
 using MarianaTestes.Dominio.ModuloMateria;
 using MarianaTestes.Dominio.ModuloQuestao;
 using MarianaTestes.Dominio.ModuloTeste;
-using MarianaTestes.InfraData.SqlServer.ModuloDisciplina;
-using MarianaTestes.InfraData.SqlServer.ModuloMateria;
-using MarianaTestes.InfraData.SqlServer.ModuloQuestao;
-using MarianaTestes.InfraData.SqlServer.ModuloTeste;
+using MarianaTestes.InfraData.Orm.Compartilhado;
+using MarianaTestes.InfraData.Orm.ModuloDisciplina;
+using MarianaTestes.InfraData.Orm.ModuloMateria;
+using MarianaTestes.InfraData.Orm.ModuloQuestao;
+using MarianaTestes.InfraData.Orm.ModuloTeste;
 using MarianaTestes.WinFormsApp.ModuloDisciplina;
 using MarianaTestes.WinFormsApp.ModuloMateria;
 using MarianaTestes.WinFormsApp.ModuloQuestao;
 using MarianaTestes.WinFormsApp.ModuloTeste;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace MarianaTestes.WinFormsApp.Compartilhado
@@ -26,20 +28,28 @@ namespace MarianaTestes.WinFormsApp.Compartilhado
         {
             var connectionString = ObterObterEnderecoBanco();
 
-            IRepositorioDisciplina repositorioDisciplina = new RepositorioDisciplinaSql(connectionString);
-            IRepositorioMateria repositorioMateria = new RepositorioMateriaSql(connectionString);
-            IRepositorioQuestao repositorioQuestao = new RepositorioQuestaoSql(connectionString);
-            IRepositorioTeste repositorioTeste = new RepositorioTesteSql(connectionString);
+            var optionBuilder = new DbContextOptionsBuilder<MarianaTestesDbContext>();
 
-            ServicoDisciplina servicoDisciplina = new ServicoDisciplina(repositorioDisciplina, new ValidadorDisciplina());
-            ServicoMateria servicoMateria = new ServicoMateria(repositorioMateria, new ValidadorMateria());
-            ServicoQuestao servicoQuestao = new ServicoQuestao(repositorioQuestao, new ValidadorQuestao());
-            ServicoTeste servicoTeste = new ServicoTeste(repositorioTeste, new ValidadorTeste());
+            optionBuilder.UseSqlServer(connectionString);
 
-            ControladorDisciplina controladorDisciplina = new ControladorDisciplina(repositorioDisciplina, servicoDisciplina);
-            ControladorMateria controladorMateria = new ControladorMateria(repositorioMateria, repositorioDisciplina,servicoMateria);
-            ControladorQuestao controladorQuestao = new ControladorQuestao(repositorioQuestao, repositorioMateria,servicoQuestao);
-            ControladorTeste controladorTeste = new ControladorTeste(repositorioTeste, repositorioMateria, repositorioDisciplina, repositorioQuestao, servicoTeste);
+            DbContext context = new MarianaTestesDbContext(optionBuilder.Options);
+
+            MarianaTestesMigradorBandoDados.AtualizarBancoDados(context);
+
+            IRepositorioDisciplina repositorioDisciplina = new RepositorioDisciplinaOrm(context);
+            IRepositorioMateria repositorioMateria = new RepositorioMateriaOrm(context);
+            IRepositorioQuestao repositorioQuestao = new RepositorioQuestaoOrm(context);
+            IRepositorioTeste repositorioTeste = new RepositorioTesteOrm(context);
+
+            var servicoDisciplina = new ServicoDisciplina(repositorioDisciplina, new ValidadorDisciplina());
+            var servicoMateria = new ServicoMateria(repositorioMateria, new ValidadorMateria());
+            var servicoQuestao = new ServicoQuestao(repositorioQuestao, new ValidadorQuestao());
+            var servicoTeste = new ServicoTeste(repositorioTeste, new ValidadorTeste(), repositorioQuestao);
+
+            var controladorDisciplina = new ControladorDisciplina(repositorioDisciplina, servicoDisciplina);
+            var controladorMateria = new ControladorMateria(repositorioMateria, repositorioDisciplina, servicoMateria);
+            var controladorQuestao = new ControladorQuestao(repositorioQuestao, repositorioMateria, servicoQuestao);
+            var controladorTeste = new ControladorTeste(repositorioTeste, repositorioMateria, repositorioDisciplina, repositorioQuestao, servicoTeste);
 
             controladores.Add("Disciplina", controladorDisciplina);
             controladores.Add("Matéria", controladorMateria);
@@ -62,6 +72,9 @@ namespace MarianaTestes.WinFormsApp.Compartilhado
                 .Build();
 
             return configuracao.GetConnectionString("SqlServer")!;
+
+
+
         }
     }
 }

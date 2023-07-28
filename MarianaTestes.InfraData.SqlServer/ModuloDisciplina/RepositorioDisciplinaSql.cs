@@ -131,5 +131,9 @@ namespace MarianaTestes.InfraData.SqlServer.ModuloDisciplina
             WHERE D.ID = @ID_DISCIPLINA";
         }
 
+        public Disciplina BuscarPorId(int id, bool carregarMaterias = false)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

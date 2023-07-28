@@ -11,9 +11,12 @@ namespace MarianaTestes.Dominio.ModuloQuestao
 
         public Materia Materia { get; set; }
 
+        public bool Utilizada { get; set; }
+
         public Questao()
         {
             Alternativas = new List<Alternativa>();
+            Utilizada = false;
         }
 
         public Questao(int id, string pergunta, Materia materia):this(pergunta, materia)
@@ -29,6 +32,11 @@ namespace MarianaTestes.Dominio.ModuloQuestao
             Pergunta = pergunta;
             Materia = materia;
            
+        }
+
+        public void AlterarStatus()
+        {
+            Utilizada = !Utilizada;
         }
 
         public void AdicionarAlternativa(Alternativa alternativa)

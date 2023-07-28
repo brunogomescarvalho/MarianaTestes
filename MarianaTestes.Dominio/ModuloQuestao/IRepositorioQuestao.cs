@@ -17,5 +17,7 @@ namespace MarianaTestes.Dominio.ModuloQuestao
         List<Questao> BuscarQuestoesNaoUtilizadas();
 
         List<Questao> BuscarQuestoesUtilizadas();
+
+        Questao BuscarPorId(int id, bool carregarAlternativas = false);
     }
 }

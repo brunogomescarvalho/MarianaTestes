@@ -11,7 +11,9 @@ namespace MarianaTestes.Dominio.ModuloTeste
 
         List<Teste> BuscarTodos(bool carregarQuestoes = false);
 
-       
+        Teste SelecionarPorId(int id, bool incluirQuestoes = false, bool incluirAlternativas = false, bool incluirMateria = false);
+
+
     }
 
 }

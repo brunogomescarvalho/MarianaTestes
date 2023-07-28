@@ -68,7 +68,7 @@ namespace MarianaTestes.WinFormsApp.ModuloTeste
 
             if (idTeste == -1) return;
 
-            Teste teste = repositorioTeste.BuscarPorId(idTeste);
+            Teste teste = repositorioTeste.SelecionarPorId(idTeste);
 
             ApresentarTelaTesteForm(teste);
         }
@@ -105,7 +105,7 @@ namespace MarianaTestes.WinFormsApp.ModuloTeste
 
             if (id == -1) return;
 
-            Teste teste = repositorioTeste.BuscarPorId(id);
+            Teste teste = repositorioTeste.SelecionarPorId(id,true,true,true);
 
             TelaDetalhesTeste telaDetalhe = new TelaDetalhesTeste(teste);
 
@@ -115,7 +115,7 @@ namespace MarianaTestes.WinFormsApp.ModuloTeste
 
         public override void AtualizarListagem()
         {
-            List<Teste> testes = repositorioTeste.BuscarTodos();
+            List<Teste> testes = repositorioTeste.BuscarTodos(true);
 
             TabelaTeste!.AtualizarLista(testes);
 
@@ -183,12 +183,12 @@ namespace MarianaTestes.WinFormsApp.ModuloTeste
 
         private Materia ObterMateriaCompleta(Materia materia)
         {
-            return repositorioMateria.BuscarMateriaParaTeste(materia);
+            return repositorioMateria.BuscarQuestoesDaMateria(materia);
         }
 
         private Disciplina ObterDisciplinaCompleta(Disciplina disciplina)
         {
-            return repositorioDisciplina.BuscarPorId(disciplina.Id);
+            return repositorioDisciplina.BuscarPorId(disciplina.Id, true);
         }
 
         private List<Questao> ObterQuestoesRecuperacao(Disciplina disciplina, SerieMateriaEnum serie)
@@ -259,7 +259,7 @@ namespace MarianaTestes.WinFormsApp.ModuloTeste
 
         private void MostrarPdf(Teste teste)
         {
-            TelaDetalhesTeste telaDetalhes = new TelaDetalhesTeste(teste);
+            var telaDetalhes = new TelaDetalhesTeste(teste);
 
             telaDetalhes.ShowDialog();
         }
